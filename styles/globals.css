@@ -1,0 +1,8 @@
+/**
+ * @file styles/globals.css
+ * @description Arquivo de estilos globais. É aqui que as diretivas do Tailwind CSS são injetadas.
+ */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
