@@ -6,11 +6,15 @@
  * @see https://nextjs.org/docs/advanced-features/custom-document
  */
 import { Html, Head, Main, NextScript } from "next/document";
+import ThemeScript from "@/components/ThemeScript";
 
 export default function Document() {
   return (
     <Html lang="pt-BR">
-      <Head />
+      <Head>
+        {/* O script do tema é injetado aqui para ser executado o mais cedo possível */}
+        <ThemeScript />
+      </Head>
       <body>
         <Main />
         <NextScript />

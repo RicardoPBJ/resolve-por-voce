@@ -14,7 +14,7 @@ import React from "react";
 
 const Layout = ({ children }: { children: ReactNode }): React.JSX.Element => {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
       <Header />
       <main className="flex-grow">{children}</main>
       <Footer />

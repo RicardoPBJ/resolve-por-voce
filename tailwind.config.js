@@ -11,6 +11,7 @@ module.exports = {
   // A propriedade 'content' é a mais importante. Ela diz ao Tailwind
   // para escanear todos esses arquivos em busca de classes de utilitário.
   // Se os caminhos estiverem errados, a responsividade não funcionará.
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",

@@ -9,14 +9,32 @@
 
 import { render, screen, fireEvent } from "@testing-library/react";
 import Header from "@/components/Header";
+import { useTheme } from "@/contexts/ThemeContext";
 
 // Mock dos ícones para não renderizar SVGs complexos nos testes.
 jest.mock("react-icons/fi", () => ({
   FiMenu: () => <div data-testid="fi-menu-icon" />,
   FiX: () => <div data-testid="fi-x-icon" />,
+  FiSun: () => <div data-testid="fi-sun-icon" />,
+  FiMoon: () => <div data-testid="fi-moon-icon" />,
 }));
 
+// Mock do hook useTheme para controlar o tema nos testes
+jest.mock("@/contexts/ThemeContext", () => ({
+  useTheme: jest.fn(),
+}));
+
+const mockedUseTheme = useTheme as jest.Mock;
+
 describe("Header Component", () => {
+  // Garante que o mock seja resetado para um estado padrão antes de cada teste
+  beforeEach(() => {
+    mockedUseTheme.mockReturnValue({
+      theme: "light",
+      setTheme: jest.fn(),
+    });
+  });
+
   it("deve renderizar a logo com o link correto", () => {
     render(<Header />);
     const logo = screen.getByRole("link", { name: /Resolve Por Você/i });
@@ -98,5 +116,35 @@ describe("Header Component", () => {
 
     // Verifica se o menu fechou
     expect(mobileNav).toHaveClass("hidden");
+  });
+
+  it("deve exibir o ícone de lua no tema claro e alternar para o tema escuro", () => {
+    const setTheme = jest.fn();
+    mockedUseTheme.mockReturnValue({
+      theme: "light",
+      setTheme,
+    });
+
+    render(<Header />);
+
+    // No tema claro, esperamos ver o ícone da lua
+    const themeButtons = screen.getAllByLabelText("Mudar tema");
+    expect(screen.getAllByTestId("fi-moon-icon").length).toBeGreaterThan(0);
+
+    // Clica no botão de tema (versão desktop)
+    fireEvent.click(themeButtons[0]);
+    expect(setTheme).toHaveBeenCalledWith("dark");
+  });
+
+  it("deve exibir o ícone de sol no tema escuro e alternar para o tema claro", () => {
+    const setTheme = jest.fn();
+    mockedUseTheme.mockReturnValue({ theme: "dark", setTheme });
+
+    render(<Header />);
+
+    const themeButtons = screen.getAllByLabelText("Mudar tema");
+    expect(screen.getAllByTestId("fi-sun-icon").length).toBeGreaterThan(0);
+    fireEvent.click(themeButtons[0]);
+    expect(setTheme).toHaveBeenCalledWith("light");
   });
 });
