@@ -1,15 +1,15 @@
-// __tests__/index.test.tsx
-import { render, screen } from "@testing-library/react";
-import HomePage from "../pages/index";
+/**
+ * @file __tests__/pages/index.test.tsx
+ * @description Testes para a página inicial.
+ */
 
-describe("HomePage", () => {
+import { render, screen } from "@testing-library/react";
+import HomePage from "@/pages/index";
+
+describe("Home Page", () => {
   it("deve renderizar o título principal", () => {
     render(<HomePage />);
-
-    const heading = screen.getByRole("heading", {
-      name: /Resolve Por Você/i,
-    });
-
+    const heading = screen.getByRole("heading", { name: /Resolve Por Você/i });
     expect(heading).toBeInTheDocument();
   });
 });

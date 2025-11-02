@@ -20,11 +20,13 @@ const createJestConfig = nextJest({
   // Isso é necessário para que o `next/jest` possa carregar corretamente
   // os arquivos de configuração do Next.js (como `next.config.js`) e as
   // variáveis de ambiente (`.env`).
+  // Forneça o caminho para o seu aplicativo Next.js para carregar next.config.js e arquivos .env em seu ambiente de teste
   dir: "./",
 });
 
 // `customJestConfig` é onde adicionamos nossas configurações personalizadas do Jest.
 // Essas configurações serão mescladas com a configuração base do Next.js.
+// Adicione qualquer configuração personalizada a ser passada para o Jest
 const customJestConfig = {
   // Uma lista de caminhos para módulos que rodam código de configuração
   // ou setup *após* o ambiente de teste ser instalado.
@@ -45,10 +47,15 @@ const customJestConfig = {
     "\\.(css|less|sass|scss)$": "identity-obj-proxy",
     "^@/components/(.*)$": "<rootDir>/components/$1",
     "^@/pages/(.*)$": "<rootDir>/pages/$1",
+    // O next/jest já lida com mocks de CSS automaticamente.
+    // Apenas precisamos garantir que o alias principal seja resolvido.
+    // Lida com os aliases de módulo (isso resolve o seu problema)
+    "^@/(.*)$": "<rootDir>/$1",
   },
 };
 
 // `createJestConfig(customJestConfig)` retorna uma função assíncrona.
 // O Next.js precisa disso para garantir que a configuração do Next seja carregada
 // antes de exportar a configuração final do Jest.
+// createJestConfig é exportado desta forma para garantir que next/jest possa carregar a configuração do Next.js, que é assíncrona
 module.exports = createJestConfig(customJestConfig);
